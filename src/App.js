@@ -7,8 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Form from "./comps/form";
 // 404 page
 import Page404 from "./comps/page404";
-// admin panel
-import Layout from "./adminComps/layout";
 
 function App() {
   return (
@@ -17,10 +15,6 @@ function App() {
         <Routes>
           {/* Users Form */}
           <Route path="/" element={<Form />} />
-          {/* Admin */}
-          <Route path="/admin" element={<Layout />}>
-            <Route index element={<Form />} />
-          </Route>
           {/* for any url that not in another route go to 404 */}
           <Route path="/*" element={<Page404 />} />
         </Routes>
