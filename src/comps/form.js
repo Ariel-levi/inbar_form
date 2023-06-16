@@ -12,6 +12,8 @@ const MAX_STEPS = 3;
 const Form = () => {
   //image upload states
   const [image, setImage] = useState(null);
+  const [sendImage, setSendImage] = useState(false);
+  const [img_url, setImg_url] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const defaultImage =
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png";
@@ -103,10 +105,15 @@ const Form = () => {
     let url = API_URL + "/users";
     try {
       setLoading(true);
-      const picUrl = image ? await uploadImage(image) : defaultImage;
-      formData.img_url = picUrl;
+      // chek if the image if already uploaded to avoid multiple uploads
+      if (!sendImage) {
+        setImg_url(image ? await uploadImage(image) : defaultImage);
+        console.log(img_url);
+        setSendImage(true);
+      }
+      formData.img_url = img_url;
       let resp = await doApiMethod(url, "POST", formData);
-      // console.log(resp.data);
+      console.log(resp.data);
       if (resp.data.status === 201) {
         toast.success("הפרטים נשלחו בהצלחה");
         // toast.info(resp.data.msg);
@@ -115,7 +122,7 @@ const Form = () => {
       }
     } catch (err) {
       setLoading(false);
-      // console.log(err.response);
+      console.log(err.response);
       if (err.response.data.code == 11000) {
         toast.error("המייל כבר קיים במערכת שלנו");
       } else {
